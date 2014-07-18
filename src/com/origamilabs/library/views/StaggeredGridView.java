@@ -53,6 +53,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
+import android.widget.AbsListView;
 import android.widget.ListAdapter;
 
 import com.origamilabs.library.R;
@@ -235,6 +236,11 @@ public class StaggeredGridView extends ViewGroup {
      */
     private Rect mTouchFrame;
 
+    /**
+     * scroll listener
+     */
+    private AbsListView.OnScrollListener mOnScrollListener;
+    
     private static final class LayoutRecord {
         public int column;
         public long id = -1;
@@ -681,6 +687,11 @@ public class StaggeredGridView extends ViewGroup {
             mSelectorRect.setEmpty();
         }
 
+        /* HERE we call onScroll */
+        if (mOnScrollListener != null) {
+            mOnScrollListener.onScroll(null, getFirstPosition(), getChildCount(), this.mItemCount);
+        }
+        
         return deltaY == 0 || movedBy != 0;
     }
 
@@ -2545,6 +2556,13 @@ public class StaggeredGridView extends ViewGroup {
         return mOnItemClickListener;
     }
 
+    /**
+     * 
+     */
+    public void setOnScrollListener (AbsListView.OnScrollListener l) {
+        mOnScrollListener = l;
+    }
+    
     public interface OnItemClickListener {
 
         /**
