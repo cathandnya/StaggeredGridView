@@ -2655,4 +2655,8 @@ public class StaggeredGridView extends ViewGroup {
 	public void setDrawSelectorOnTop(boolean mDrawSelectorOnTop) {
 		this.mDrawSelectorOnTop = mDrawSelectorOnTop;
 	}
+		
+    public void setFirstPosition(int pos) {
+        mFirstPosition = pos;
+    }
 }
