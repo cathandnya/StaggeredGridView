@@ -2659,4 +2659,11 @@ public class StaggeredGridView extends ViewGroup {
     public void setFirstPosition(int pos) {
         mFirstPosition = pos;
     }
+    
+    public void clearColMappings() {
+    	mColMappings.clear();
+    	for(int i=0; i < mColCount; i++){
+    		mColMappings.add(new HashSet<Integer>());
+    	}
+    }
 }
