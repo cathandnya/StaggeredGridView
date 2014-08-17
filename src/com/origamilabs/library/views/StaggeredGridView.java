@@ -809,6 +809,7 @@ public class StaggeredGridView extends ViewGroup {
     public void computeScroll() {
         if (mScroller.computeScrollOffset()) {
             final int y = mScroller.getCurrY();
+            android.util.Log.d("Scroller", "getCurrY: " + y);
             final int dy = (int) (y - mLastTouchY);
             mLastTouchY = y;
             final boolean stopped = !trackMotionScroll(dy, false);
@@ -1312,19 +1313,22 @@ public class StaggeredGridView extends ViewGroup {
         	final View child = getFirstChildAtColumn(i);
 
         	if(child == null){
-        		highestView = 0;
-        		break;
+        		//highestView = 0;
+        		//break;
+        		continue;
         	}
-            LayoutParams lp = (LayoutParams) child.getLayoutParams();
-            i += Math.max(lp.span,1);
+            //LayoutParams lp = (LayoutParams) child.getLayoutParams();
+            //i += Math.max(lp.span,1);
 
         	final int top = child.getTop();
+            android.util.Log.d("filldown", "child[" + i + "]: " + top);
 
         	if (top < highestView) {
                 highestView = top;
             }
         }
 
+        android.util.Log.d("filldown", "gridTop: " + gridTop + ", highestView: " + highestView);
         return gridTop - highestView;
     }
 
@@ -2660,7 +2664,9 @@ public class StaggeredGridView extends ViewGroup {
         mFirstPosition = pos;
     }
     
-    public void clearColMappings() {
+    public void clearColMappings() {    	
+    	clearAllState();
+    	
     	mColMappings.clear();
     	for(int i=0; i < mColCount; i++){
     		mColMappings.add(new HashSet<Integer>());
