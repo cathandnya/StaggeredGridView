@@ -2660,7 +2660,21 @@ public class StaggeredGridView extends ViewGroup {
 		this.mDrawSelectorOnTop = mDrawSelectorOnTop;
 	}
 		
-    public void setFirstPosition(int pos) {
+    public void setFirstPosition(int pos, boolean allowDown) {
+    	for (int i = pos; i >= 0; i--) {
+    		if (mColMappings.get(0).contains(i)) {
+    			mFirstPosition = i;
+    			return;
+    		}
+    	}
+    	if (allowDown) {
+        	for (int i = pos; i < mItemCount; i++) {
+        		if (mColMappings.get(0).contains(i)) {
+        			mFirstPosition = i;
+        			return;
+        		}
+        	}
+    	}
         mFirstPosition = pos;
     }
     
