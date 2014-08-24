@@ -137,7 +137,7 @@ public class StaggeredGridView extends ViewGroup {
     private int mActivePointerId;
     private int mMotionPosition;
     private int mColWidth;
-    private int mNumCols;
+    //private int mNumCols;
     private long mFirstAdapterId;
     private boolean mBeginClick;
 
@@ -1192,12 +1192,16 @@ public class StaggeredGridView extends ViewGroup {
 			if(!mColMappings.get(nextCol).contains(positionInt)){
         		for(int i=0; i < mColMappings.size(); i++){
         			if(mColMappings.get(i).contains(positionInt)){
+        				mColMappings.get(nextCol).remove(i);
         				nextCol = i;
         				break;
         			}
         		}
         	}
-
+			if(!mColMappings.get(nextCol).contains(positionInt)){
+				mColMappings.get(nextCol).add(positionInt);
+			}
+			
 //        	displayMapping();
 
         	final View child = obtainView(position, null);
@@ -1378,6 +1382,16 @@ public class StaggeredGridView extends ViewGroup {
         int position = fromPosition;
 
         while (nextCol >= 0 && mItemBottoms[nextCol] < fillTo && position < mItemCount) {
+        	Integer positionInt = Integer.valueOf(position);
+			if(!mColMappings.get(nextCol).contains(positionInt)){
+        		for(int i=0; i < mColMappings.size(); i++){
+        			if(mColMappings.get(i).contains(positionInt)){
+        				mColMappings.get(nextCol).remove(i);
+        				nextCol = i;
+        				break;
+        			}
+        		}
+        	}
 
         	final View child = obtainView(position, null);
 
@@ -1468,7 +1482,7 @@ public class StaggeredGridView extends ViewGroup {
 
 
             // add the position to the mapping
-            Integer positionInt = Integer.valueOf(position);
+            //Integer positionInt = Integer.valueOf(position);
             if(!mColMappings.get(nextCol).contains(positionInt)){
 
             	// check to see if the mapping exists in other columns
@@ -2676,6 +2690,21 @@ public class StaggeredGridView extends ViewGroup {
         	}
     	}
         mFirstPosition = pos;
+    }
+
+    public void moveFirstPosition(int delta) {
+    	ArrayList<HashSet<Integer>> mapping = new ArrayList<HashSet<Integer>>();
+    	for (int i = 0; i < mColCount; i++) {
+    		HashSet<Integer> set = new HashSet<Integer>();	
+    		mapping.add(set);
+    		
+    		for (Integer val: mColMappings.get(i)) {
+    			set.add(val + delta);
+    		}
+    	}
+    	mColMappings = mapping;
+    	
+    	mFirstPosition += delta;
     }
     
     public void clearColMappings() {    	
